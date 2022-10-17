@@ -36,8 +36,8 @@ python3 -m pip install --upgrade pip pip install -r requirements.txt
 python3 manage.py migrate
 ```
 4. Запустить проект:
-
+```
 python3 manage.py runserver
-
+```
 
 ### Руководство с примерами можно посмотреть [тут](http://127.0.0.1:8000/redoc/)
