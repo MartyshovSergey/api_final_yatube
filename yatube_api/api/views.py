@@ -19,28 +19,18 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         post_id = self.kwargs.get('post_id')
-        return (Comment.objects.filter(post=post_id))
+        return Comment.objects.filter(post_id=post_id)
 
     def perform_create(self, serializer):
-        post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
+        post = get_object_or_404(Post, id=self.kwargs.get('post_id'))
         serializer.save(author=self.request.user, post=post)
 
-    def perform_update(self, serializer):
-        super().perform_update(serializer)
 
-    def perform_destroy(self, instance):
-        instance.delete()
-
-
-class CreateListViewSet(
+class FollowViewSet(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
     viewsets.GenericViewSet
 ):
-    pass
-
-
-class FollowViewSet(CreateListViewSet):
     serializer_class = FollowSerializer
     permission_classes = (IsAuthenticated, )
     filter_backends = (filters.SearchFilter, )
@@ -68,9 +58,3 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
-
-    def perform_update(self, serializer):
-        super().perform_update(serializer)
-
-    def perform_destroy(self, instance):
-        instance.delete()
